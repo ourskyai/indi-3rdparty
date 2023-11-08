@@ -1214,6 +1214,20 @@ int ASIBase::grabImage(float duration)
         LOG_INFO("Download complete.");
 
     ExposureComplete(&PrimaryCCD);
+
+    ASI_GPS_DATA startData;
+    ASI_GPS_DATA endData;
+
+    ASI_ERROR_CODE retG = ASIGPSGetData(mCameraInfo.CameraID, &startData, &endData);
+
+    if(retG == ASI_SUCCESS) {
+        LOGF_INFO("GPS Start Data Latitude: %f Longitude: %f Altitude: %d  SatelliteNum: %d", startData.Latitude, startData.Longitude, startData.Altitude, startData.SatelliteNum);
+        LOGF_INFO("GPS End Data Latitude: %f Longitude: %f Altitude: %d  SatelliteNum: %d", startData.Latitude, startData.Longitude, startData.Altitude, startData.SatelliteNum);
+    }
+    else {
+        LOGF_WARN("GPS Data error response %d", retG);
+    }
+
     return 0;
 }
 
